@@ -1,0 +1,325 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Linden Row: design tokens
+   Palette: architectural neutrals carrying the Linden Row
+   cobalt (#1336E5) as a single, sparingly used signal colour.
+------------------------------------------------------------------- */
+@theme {
+  --color-ink: #111413;
+  --color-charcoal: #171a19;
+  --color-graphite: #232826;
+  --color-ivory: #f5f2ec;
+  --color-paper: #ece8e0;
+  --color-stone: #d9d6cf;
+  --color-concrete: #b5b0a5;
+  --color-olive: #747b68;
+  --color-muted: #5b5e58;
+  --color-mist: #a9aba5;
+  --color-cobalt: #1336e5;
+  --color-cobalt-soft: #93a4ff;
+
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', 'Manrope', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-arch: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --breakpoint-xs: 26rem;
+  --breakpoint-3xl: 112rem;
+}
+
+:root {
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --header-h: 5.25rem;
+  --section-y: clamp(6rem, 13vw, 13rem);
+
+  /* Fluid type scale */
+  --fs-mega: clamp(3.4rem, 10.6vw, 13.5rem);
+  --fs-display: clamp(2.9rem, 7.2vw, 8.5rem);
+  --fs-h1: clamp(2.6rem, 5.6vw, 6.4rem);
+  --fs-h2: clamp(2.2rem, 4.4vw, 4.9rem);
+  --fs-h3: clamp(1.6rem, 2.4vw, 2.6rem);
+  --fs-lead: clamp(1.08rem, 1.3vw, 1.32rem);
+  --fs-body: clamp(0.98rem, 1.02vw, 1.06rem);
+  --fs-label: 0.72rem;
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------------ Base */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: clip;
+  }
+  body {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.65;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-cobalt);
+    color: #fff;
+  }
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cobalt);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-cobalt-soft);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ---------------------------------------------------------- Utilities */
+@utility container-x {
+  width: 100%;
+  max-width: 120rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility section-y {
+  padding-block: var(--section-y);
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+}
+
+@utility text-mega {
+  font-size: var(--fs-mega);
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+}
+@utility text-display {
+  font-size: var(--fs-display);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+@utility text-h1 {
+  font-size: var(--fs-h1);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+}
+@utility text-h2 {
+  font-size: var(--fs-h2);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+@utility text-h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+@utility text-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+}
+
+/* Small caps style label used for eyebrows and metadata */
+@utility label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+@utility num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+/* Hairline architectural rules */
+@utility hairline {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.18;
+}
+
+/* Fine grain overlay, used on dark immersive sections */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.07;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Architectural grid overlay */
+@utility arch-grid {
+  background-image: linear-gradient(to right, color-mix(in srgb, currentColor 9%, transparent) 1px, transparent 1px);
+  background-size: calc((100% - 2 * var(--gutter)) / 12) 100%;
+  background-position: var(--gutter) 0;
+}
+
+/* -------------------------------------------------------- Components */
+@layer components {
+  /* Animated underline link */
+  .u-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    background: linear-gradient(currentColor, currentColor) no-repeat right bottom / 0% 1px;
+    transition: background-size 0.6s var(--ease-out-expo);
+    padding-bottom: 2px;
+  }
+  .u-link:hover,
+  .u-link:focus-visible {
+    background-position: left bottom;
+    background-size: 100% 1px;
+  }
+
+  /* Primary / secondary buttons */
+  .btn {
+    --btn-bg: var(--color-cobalt);
+    --btn-fg: #fff;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    min-height: 3.5rem;
+    padding: 0 1.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--btn-fg);
+    background: var(--btn-bg);
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.5s var(--ease-out-expo);
+    will-change: transform;
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-hover, var(--color-ink));
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: translateY(0);
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--btn-hover-fg, #fff);
+  }
+  .btn .btn-icon {
+    transition: transform 0.6s var(--ease-out-expo);
+  }
+  .btn:hover .btn-icon {
+    transform: translate(3px, -3px);
+  }
+  .btn-ghost {
+    --btn-bg: transparent;
+    --btn-fg: currentColor;
+    --btn-hover: currentColor;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 40%, transparent);
+  }
+  .on-dark .btn-ghost {
+    --btn-hover-fg: var(--color-ink);
+  }
+  .on-light .btn-ghost {
+    --btn-hover-fg: var(--color-ivory);
+  }
+  .on-dark .btn:not(.btn-ghost) {
+    --btn-hover: var(--color-ivory);
+    --btn-hover-fg: var(--color-ink);
+  }
+
+  /* Image wrapper with consistent cropping */
+  .media {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-graphite);
+  }
+  .media > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Line masks for headline reveals. Padding gives ascenders, descenders and
+     italic overhangs room inside the clip; matching negative margins keep the
+     layout identical to an unmasked line. */
+  .line-mask,
+  .split-line-mask {
+    display: block;
+    overflow: clip;
+    padding: 0.12em 0.2em 0.24em 0.12em;
+    margin: -0.12em -0.2em -0.24em -0.12em;
+  }
+}
+
+@keyframes scrollcue {
+  0% {
+    transform: translateY(-100%);
+  }
+  60%,
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+/* --------------------------------------------------- Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
