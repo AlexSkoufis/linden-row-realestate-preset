@@ -30,3 +30,5 @@ logs/
 tsconfig.tsbuildinfo
 *.code-workspace
 __MACOSX/
+
+.vercel
